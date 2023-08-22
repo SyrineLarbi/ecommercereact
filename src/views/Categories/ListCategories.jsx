@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import categoryservice from '../services/categoryservice'
+import categoryservice from '../../services/categoryservice'
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
 
 
 const ListCategories = () => {
@@ -9,10 +10,10 @@ const ListCategories = () => {
     const [affiche,setAffiche]=useState(false)
     const GetAllCategories = ()=>{
         categoryservice.GetAll().then((res)=>{
-            console.log(res);
+            // console.log(res);
             setCategories(res.data.data)
             setAffiche(true)
-            console.log(categories);
+            // console.log(categories);
         }).catch((err)=>{
             console.log(err);
         })
@@ -44,9 +45,10 @@ const ListCategories = () => {
     }
     if(affiche){
   return (
+  <div>
    <div className="row">
-  <div className="col-md-12">
-    <div className="panel panel-default">
+    <div className="col-md-12">
+     <div className="panel panel-default">
       <div className="panel-heading">
         <h3 className="panel-title">List Categories</h3>
       </div>
@@ -58,6 +60,7 @@ const ListCategories = () => {
                 <th width={50}>id</th>
                 <th>name</th>
                 <th width={100}>Description</th>
+                <th width={100}>SubCategories</th>
                 <th width={100}>actions</th>
               </tr>
             </thead>
@@ -68,20 +71,31 @@ const ListCategories = () => {
                     <td className="text-center">{item._id}</td>
                     <td><strong>{item.name}</strong></td>
                     <td><span className="label label-success">{item.description}</span></td>
+                    <td> {item.subCategories.map((subCategory)=>{
+                      return(
+                      
+                        <tr>
+                          {subCategory.name}
+                        </tr>
+                      )
+                    })}
+                    </td>
                     <td>
+                      <Link to={`/updateCategory/${item._id}`}>
                       <button className="btn btn-default btn-rounded btn-sm"><span className="fa fa-pencil" /></button>
-                      <button className="btn btn-danger btn-rounded btn-sm" onclick={(e)=>deleteCategory(item._id)}><span className="fa fa-times" /></button>
+                      </Link>
+                      <button className="btn btn-danger btn-rounded btn-sm" onClick={(e)=>deleteCategory(item._id)}><span className="fa fa-times" /></button>
                     </td>
                   </tr>
                 )})}                                           
             </tbody>
           </table>
         </div>                                
-      </div>
-    </div>                                                
+       </div>
+      </div>                                                
+    </div>
   </div>
-   </div>
-
+</div>
   )
   }
 }
