@@ -1,7 +1,7 @@
 import http from './axiosContext'
 
 const create=(data)=>{
-    return http.post("/Products")
+    return http.post("/Products",data)
 }
 
 const GetAll=()=>{

@@ -7,11 +7,13 @@ const SideBar = () => {
       {/* START X-NAVIGATION */}
       <ul className="x-navigation">
         <li className="xn-logo">
-          <a href="index.html">Joli Admin</a>
+          <Link to="/home/profile">
+             Joli Admin
+            </Link>
           <a href="#" className="x-navigation-control" />
         </li>
         <li className="xn-profile">
-          <a href="#" className="profile-mini">
+          <a href="/home/profile" className="profile-mini">
             <img src="assets/images/users/avatar.jpg" alt="John Doe" />
           </a>
           <div className="profile">
@@ -43,13 +45,13 @@ const SideBar = () => {
               </button>
               <ul>
                 <li className="active dropdown-menu">
-                  <Link to="#" className="dropdown-item">
+                  <Link to="/home/createProduct" className="dropdown-item">
                     <span className="fa fa-plus-square" />{" "}
                     <span className="xn-text">Add Product</span>
                   </Link>
                 </li>
                 <li className="active dropdown-menu">
-                  <Link to="#" className="dropdown-item">
+                  <Link to="/home/product" className="dropdown-item">
                     <span className="fa fa-file-text-o" />{" "}
                     <span className="xn-text">List Product</span>
                   </Link>
@@ -68,13 +70,13 @@ const SideBar = () => {
               </button>
               <ul>
                 <li className="active dropdown-menu">
-                  <Link to="/createCategory" className="dropdown-item">
+                  <Link to="/home/createCategory" className="dropdown-item">
                     <span className="fa fa-plus-square" />{" "}
                     <span className="xn-text">Add Category</span>
                   </Link>
                 </li>
                 <li className="active dropdown-menu">
-                  <Link to="/category" className="dropdown-item">
+                  <Link to="/home/category" className="dropdown-item">
                     <span className="fa fa-file-text-o" />{" "}
                     <span className="xn-text">List Category</span>
                   </Link>
@@ -94,13 +96,13 @@ const SideBar = () => {
               </button>
               <ul>
                 <li className="active dropdown-menu">
-                  <Link to="/createSubCategory" className="dropdown-item">
+                  <Link to="/home/createSubCategory" className="dropdown-item">
                     <span className="fa fa-plus-square" />{" "}
                     <span className="xn-text">Add Subcategory</span>
                   </Link>
                 </li>
                 <li className="active dropdown-menu">
-                  <Link to="/subcategory" className="dropdown-item">
+                  <Link to="/home/subcategory" className="dropdown-item">
                     <span className="fa fa-file-text-o" />{" "}
                     <span className="xn-text">List Subcategory</span>
                   </Link>

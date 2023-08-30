@@ -26,7 +26,7 @@ const UpdateCategory = () => {
             if (result.isConfirmed) {
                 categoryservice.update(id,data).then ((res)=>{
                     console.log(res);
-                    navigate('/category')
+                    navigate('/home/category')
                 }).catch ((err)=>{
                     console.log(err);
                 })

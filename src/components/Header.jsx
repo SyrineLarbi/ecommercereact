@@ -1,6 +1,45 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Header = () => {
+  
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [currentDate, setCurrentDate] = useState('');
+  const navigate = useNavigate();
+  const logoutHandler = () =>{
+    const token = user.tokens.accessToken //replace with the actual access token
+    console.log(token);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Loged out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        axios.get('http://localhost:3000/auth/logout',{headers}).then(response =>{
+          navigate('/')
+          localStorage.clear()
+        }).catch(error =>{
+          console.log(error);
+        })
+        Swal.fire(
+          'Logedout ',
+          'Your file has been log out.',
+          'success'
+        )
+      }
+    })
+  }
+
+
   return (
     <ul className="x-navigation x-navigation-horizontal x-navigation-panel">
         {/* TOGGLE NAVIGATION */}
@@ -17,7 +56,7 @@ const Header = () => {
         {/* END SEARCH */}
         {/* SIGN OUT */}
         <li className="xn-icon-button pull-right">
-          <a href="#" className="mb-control" data-box="#mb-signout"><span className="fa fa-sign-out" /></a>                        
+          <a href="#" className="mb-control" data-box="#mb-signout" onClick={logoutHandler}><span className="fa fa-sign-out" /></a>                        
         </li> 
         {/* END SIGN OUT */}
         {/* MESSAGES */}

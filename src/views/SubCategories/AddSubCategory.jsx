@@ -40,7 +40,7 @@ const AddSubCategory = () => {
             if (result.isConfirmed) {
                 categoryservice.create(data).then ((res)=>{
                     console.log(res);
-                    navigate('/category')
+                    navigate('/home/category')
                 }).catch ((err)=>{
                     console.log(err);
                 })

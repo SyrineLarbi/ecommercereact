@@ -1,6 +1,65 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Chart } from 'chart.js/auto'
+import { Bar, Line, Doughnut, Radar, PolarArea } from 'react-chartjs-2'
+import productservice from '../services/productservice'
+import categoryservice from '../services/categoryservice'
+import subcategoryservice from '../services/subcategoryservice'
 
 const Layout = () => {
+ const [date,setDate] = useState("")
+ const [hour,setHours] = useState("")
+  //affichage heure et date
+  const ViewDate = ()=>{
+    var d= new Date();
+    var dates = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+    console.log(date);
+    setDate(dates)
+    var hours = d.getHours() + ":" + d.getMinutes();
+    setHours(hours)
+  }
+    
+  setTimeout (()=>{ 
+    ViewDate()}
+    ,1000);
+  const [product, setProduct] = useState();
+  const GetAllP = () =>{
+    productservice.GetAll().then((res)=>{
+      console.log(res);
+      setProduct(res.data.data)
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+  useEffect(()=>{
+    GetAllP();
+  },[]);
+  const [categories, setCategories] = useState();
+  const GetAllC = () =>{
+    categoryservice.GetAll().then((res)=>{
+      console.log(res);
+      setCategories(res.data.data)
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+  useEffect(()=>{
+    GetAllC();
+  },[])
+  const [subcategory, setSubCategory] = useState();
+  const GetAllsub = () =>{
+    subcategoryservice.GetAll().then((res)=>{
+      console.log(res);
+      setSubCategory(res.data.data)
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+  useEffect(()=>{
+    GetAllsub();
+  })
+  
   return (
 <div>
       <div>
@@ -47,10 +106,10 @@ const Layout = () => {
                   <span className="fa fa-envelope" />
                 </div>                             
                 <div className="widget-data">
-                  <div className="widget-int num-count">48</div>
-                  <div className="widget-title">New messages</div>
+                  <div className="widget-int num-count">{product?.length}</div>
+                  <div className="widget-title">Product</div>
                   <div className="widget-subtitle">In your mailbox</div>
-                </div>      
+                </div>     
                 <div className="widget-controls">                                
                   <a href="#" className="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span className="fa fa-times" /></a>
                 </div>
@@ -64,8 +123,8 @@ const Layout = () => {
                   <span className="fa fa-user" />
                 </div>
                 <div className="widget-data">
-                  <div className="widget-int num-count">375</div>
-                  <div className="widget-title">Registred users</div>
+                  <div className="widget-int num-count">{categories?.length}</div>
+                  <div className="widget-title">Categories</div>
                   <div className="widget-subtitle">On your website</div>
                 </div>
                 <div className="widget-controls">                                
@@ -77,8 +136,8 @@ const Layout = () => {
             <div className="col-md-3">
               {/* START WIDGET CLOCK */}
               <div className="widget widget-info widget-padding-sm">
-                <div className="widget-big-int plugin-clock">00:00</div>                            
-                <div className="widget-subtitle plugin-date">Loading...</div>
+                <div className="widget-big-int plugin-clock">{hour}</div>                            
+                <div className="widget-subtitle plugin-date">{date}</div>
                 <div className="widget-controls">                                
                   <a href="#" className="widget-control-right widget-remove" data-toggle="tooltip" data-placement="left" title="Remove Widget"><span className="fa fa-times" /></a>
                 </div>                            
@@ -324,8 +383,81 @@ const Layout = () => {
                 </div>
                 <div className="panel-body padding-0">
                   <div className="chart-holder" id="dashboard-line-1" style={{height: 200}} />
+                  <Doughnut
+                  data={{
+                    labels: product?.map((x) => x.name),
+                    datasets: [
+                      {
+                        label: "# of Votes",
+                        data: product?.map((x) => x.qte),
+                        backgroundColor: [
+                          "rgba(250, 10, 132, 0.8)",
+                          "rgba(54, 162, 235, 0.5)",
+                          "rgba(255, 206, 86, 0.8)",
+                          "rgba(75, 192, 192, 0.7)",
+                          "rgba(153, 102, 255, 0.8)",
+                          "rgba(255, 159, 64, 0.7)",
+                        ],
+                        borderColor: [
+                          "rgba(255, 99, 132, 1)",
+                          "rgba(54, 162, 235, 1)",
+                          "rgba(255, 206, 86, 1)",
+                          "rgba(75, 192, 192, 1)",
+                          "rgba(153, 102, 255, 1)",
+                          "rgba(255, 159, 64, 1)",
+                        ],
+                        borderWidth: 1,
+                      },
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                      },
+                    },
+                  }}
+                />
                 </div>
               </div>
+              <div className="panel-body padding-0">
+                  <div className="chart-holder" id="dashboard-line-1" style={{height: 200}} />
+                  <Bar
+                  data={{
+                    labels: product?.map((x) => x.name),
+                    datasets: [
+                      {
+                        label: "# of Votes",
+                        data: product?.map((x) => x.price),
+                        backgroundColor: [
+                          "rgba(250, 10, 132, 0.8)",
+                          "rgba(54, 162, 235, 0.5)",
+                          "rgba(255, 206, 86, 0.8)",
+                          "rgba(75, 192, 192, 0.7)",
+                          "rgba(153, 102, 255, 0.8)",
+                          "rgba(255, 159, 64, 0.7)",
+                        ],
+                        borderColor: [
+                          "rgba(255, 99, 132, 1)",
+                          "rgba(54, 162, 235, 1)",
+                          "rgba(255, 206, 86, 1)",
+                          "rgba(75, 192, 192, 1)",
+                          "rgba(153, 102, 255, 1)",
+                          "rgba(255, 159, 64, 1)",
+                        ],
+                        borderWidth: 1,
+                      },
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                      },
+                    },
+                  }}
+                />
+                </div>
               {/* END SALES & EVENTS BLOCK */}
             </div>
           </div>

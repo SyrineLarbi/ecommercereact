@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 
 const ListSubCategories = () => {
-    const [subCategories,setSubCategories] = useState({})
+    const [subCategories,setSubCategories] = useState([])
     const [affiche, setAffiche] = useState(false)
     const GetAllSubCategories = () => {
         subcategoryservice.GetAll().then((res) => {
@@ -21,6 +21,19 @@ const ListSubCategories = () => {
     useEffect(() =>{
         GetAllSubCategories()
     },[])
+    const [inputText, setInputText] = useState('');
+  let inputHandler = (e) =>{
+    //convert input text to lower case
+    var lowerCase = e.target.value.toLowerCase();
+    setInputText(lowerCase);
+  };
+  const filterdData = subCategories?.filter((el)=>{
+    if (inputText ===""){
+      return el;
+    } else {
+      return (el.name).toLowerCase().includes(inputText)
+    }
+  })
     const deleteSubCategory = (id)=>{
         Swal.fire({
             title: 'Are you sure?',
@@ -66,7 +79,7 @@ const ListSubCategories = () => {
                     </tr>
                   </thead>
                   <tbody> 
-                      {subCategories?.map((item)=>{
+                      {filterdData?.map((item)=>{
                           return(
                           <tr id="trow_1">
                           <td className="text-center">{item._id}</td>
@@ -84,7 +97,7 @@ const ListSubCategories = () => {
                           </td>
                           <td>{item.category?.name}</td>
                           <td>
-                            <Link to={`/updateSubCategory/${item._id}`}>
+                            <Link to={`/home/updateSubCategory/${item._id}`}>
                             <button className="btn btn-default btn-rounded btn-sm"><span className="fa fa-pencil" /></button>
                             </Link>
                             <button className="btn btn-danger btn-rounded btn-sm" onClick={(e)=> deleteSubCategory(item._id)}><span className="fa fa-times" /></button>

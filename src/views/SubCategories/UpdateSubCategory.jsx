@@ -43,7 +43,7 @@ const UpdateSubCategory = () => {
             if (result.isConfirmed) {
                 subcategoryservice.update(id,data).then ((res)=>{
                     console.log(res);
-                    navigate('/subcategory')
+                    navigate('/home/subcategory')
                 }).catch ((err)=>{
                     console.log(err);
                 })

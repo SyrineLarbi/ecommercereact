@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom'
 
 
 const ListCategories = () => {
-    const [categories,setCategories] = useState({})
+ 
+    const [categories,setCategories] = useState([])
     const [affiche,setAffiche]=useState(false)
     const GetAllCategories = ()=>{
         categoryservice.GetAll().then((res)=>{
@@ -21,6 +22,19 @@ const ListCategories = () => {
     useEffect(()=> {
         GetAllCategories()
     },[])
+    const [inputText, setInputText] = useState('');
+    let inputHandler = (e) =>{
+      //convert input text to lower case
+      var lowerCase = e.target.value.toLowerCase();
+      setInputText(lowerCase);
+    };
+    const filterdData = categories?.filter((el)=>{
+      if (inputText ===""){
+        return el;
+      } else {
+        return (el.name).toLowerCase().includes(inputText)
+      }
+    })
     const deleteCategory = (id)=>{
         Swal.fire({
             title: 'Are you sure?',
@@ -51,9 +65,15 @@ const ListCategories = () => {
      <div className="panel panel-default">
       <div className="panel-heading">
         <h3 className="panel-title">List Categories</h3>
+        <li className="xn-search">
+          <form role="form">
+            <input type="text" onChange={inputHandler} name="search" placeholder="Search..." />
+          </form>
+        </li>  
       </div>
       <div className="panel-body panel-body-table">
         <div className="table-responsive">
+
           <table className="table table-bordered table-striped table-actions">
             <thead>
               <tr>
@@ -65,7 +85,7 @@ const ListCategories = () => {
               </tr>
             </thead>
             <tbody> 
-                {categories?.map((item)=>{
+                {filterdData?.map((item)=>{
                     return(
                     <tr id="trow_1">
                     <td className="text-center">{item._id}</td>
@@ -81,7 +101,7 @@ const ListCategories = () => {
                     })}
                     </td>
                     <td>
-                      <Link to={`/updateCategory/${item._id}`}>
+                      <Link to={`/home/updateCategory/${item._id}`}>
                       <button className="btn btn-default btn-rounded btn-sm"><span className="fa fa-pencil" /></button>
                       </Link>
                       <button className="btn btn-danger btn-rounded btn-sm" onClick={(e)=>deleteCategory(item._id)}><span className="fa fa-times" /></button>
